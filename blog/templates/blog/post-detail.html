@@ -3,29 +3,22 @@
 {% block styles %}
     <link rel="stylesheet" href="{% static 'blog/post-detail.css' %}">
 {% endblock %}
-{% block title %}This Post Title{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 {% block content %}
     <section id="summary">
     <h2>Post Title</h2>
         <article>
-            <img src="https://www.datocms-assets.com/45470/1631795624-logo-django.png?fm=webp" alt="Post Title">
-
-            <adress>By Esmail Elturky</adress>
-            <div >
-                Last updated on <time>July 10th</time>
-            </div>
+            <h2>{{ post.title }}</h2>
+            <article>
+                <img src="{{ post.image}}" alt="">
+                <adress>By {{ post.author }}</adress>
+                <div>Last updated on<time>{{ post.date | date:"d M Y" }}</time></div>
+            </article>
 
         </article>
 
     </section>
     <main>
-    <p>
-    What is Django? Django is a high-level Python web framework that enables rapid development of secure and maintainable websites. Built by experienced developers, Django takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel.</p>
-      <p>
-    What is Django? Django is a high-level Python web framework that enables rapid development of secure and maintainable websites. Built by experienced developers, Django takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel.</p>
-      <p>
-    What is Django? Django is a high-level Python web framework that enables rapid development of secure and maintainable websites. Built by experienced developers, Django takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel.</p>
-      <p>
-    What is Django? Django is a high-level Python web framework that enables rapid development of secure and maintainable websites. Built by experienced developers, Django takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel.</p>
-    </main>
+    {{ post.content|linebreaks}}
+   </main>
 {% endblock %}
