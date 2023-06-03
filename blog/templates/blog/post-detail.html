@@ -6,13 +6,17 @@
 {% block title %}{{ post.title }}{% endblock %}
 {% block content %}
     <section id="summary">
-    <h2>Post Title</h2>
+    <h2>{{ post.title}}</h2>
+        <div>
+            {% for tag in post_tags %}
+                <span class="tag">{{ tag.caption }}</span>
+            {% endfor %}
+        </div>
         <article>
-            <h2>{{ post.title }}</h2>
             <article>
-                <img src="{{ post.image}}" alt="">
-                <adress>By {{ post.author }}</adress>
-                <div>Last updated on<time>{{ post.date | date:"d M Y" }}</time></div>
+                <img src="{{ post.image_name}}" alt="{{ post.title }}">
+                <address>By <a href="">{{ post.author }}</a></address>
+                <div>updated on <time>{{ post.date|date:"d M Y" }}</time></div>
             </article>
 
         </article>

@@ -15,14 +15,22 @@ class Author(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
+class Tag(models.Model):
+    caption = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.caption
+
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
     excerpt = models.CharField(max_length=100)
     image_name = models.CharField(max_length=100)
     date = models.DateField(auto_now=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     content = models.TextField(validators=[MinLengthValidator(10)])
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, related_name='posts')
+    tags = models.ManyToManyField('Tag', related_name='posts')
 
     def __str__(self):
         return f"{self.title} on {self.date}"
@@ -30,11 +38,3 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-
-
-class Tag(models.Model):
-    caption = models.CharField(max_length=20)
-    posts = models.ManyToManyField(Post, related_name='tags')
-
-    def __str__(self):
-        return self.caption
