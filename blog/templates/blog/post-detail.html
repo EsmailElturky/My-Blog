@@ -12,14 +12,22 @@
                 <span class="tag">{{ tag.caption }}</span>
             {% endfor %}
 {#        adding button to reade later#}
-                {% if has_read_later_posts %}
-        <div id="read-later">
-        <form action="{% url 'read_later' %}" method="post" style="margin-top: 10px">
-            {% csrf_token %}
-            <input type="hidden" name="post_id" value="{{ post.id }}">
-            <button type="submit">Read Later</button>
-        </form>
-            </div>
+            {% if has_read_later_posts %}
+                <div id="read-later">
+                    <form action="{% url 'read_later' %}" method="post" style="margin-top: 10px">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                        <button type="submit">Read Later</button>
+                    </form>
+                </div>
+            {% else %}
+                <div id="read-later">
+                            <form action="{% url 'read_later' %}" method="post" style="margin-top: 10px">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{ post.id }}">
+                                <button type="submit">Remove from read later list</button>
+                            </form>
+                </div>
         {% endif %}
         </div>
         <article>
