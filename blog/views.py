@@ -49,9 +49,14 @@ class SinglePostView(View):
         identified_post = get_object_or_404(Post, slug=slug)
         comment_form = CommentForm()
         comments = identified_post.comments.all().order_by('-id')
+        context = {'post': identified_post, 'post_tags': identified_post.tags.all(), 'comment_form': comment_form,
+                   'comments': comments}
+        if self.request.session.get('saved_posts', []) is not None:
+            context["has_read_later_posts"] = str(identified_post.id) in self.request.session.get('saved_posts', [])
+        else:
+            context["has_read_later_posts"] = True
         return render(request, 'blog/post-detail.html',
-                      {'post': identified_post, 'post_tags': identified_post.tags.all(), 'comment_form': comment_form,
-                       'comments': comments})
+                      context)
 
     def post(self, request, slug):
         identified_post = get_object_or_404(Post, slug=slug)
@@ -80,7 +85,6 @@ class AddToReadLaterPostsView(View):
 
     def post(self, request):
         post_id = request.POST['post_id']
-        print(post_id)
         stored_posts = request.session.get('saved_posts')
         if stored_posts is None:
             stored_posts = []
@@ -88,8 +92,7 @@ class AddToReadLaterPostsView(View):
         if request.POST['post_id'] not in stored_posts:
             stored_posts.append(post_id)
             request.session['saved_posts'] = stored_posts
-
-        if request.POST['post_id'] in stored_posts:
+        else:
             stored_posts.remove(post_id)
             request.session['saved_posts'] = stored_posts
         return redirect('read_later_posts')
