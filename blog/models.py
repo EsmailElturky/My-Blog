@@ -25,7 +25,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     excerpt = models.CharField(max_length=100)
-    image_name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='posts', null=True)
     date = models.DateField(auto_now=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     content = models.TextField(validators=[MinLengthValidator(10)])
@@ -38,3 +38,10 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class Comment(models.Model):
+    user_name = models.CharField(max_length=100)
+    user_email = models.EmailField()
+    text = models.TextField(max_length=200)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')

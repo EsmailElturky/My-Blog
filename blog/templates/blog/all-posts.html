@@ -12,11 +12,15 @@
 
     <section id="all-posts">
     <h2>My Collected Posts</h2>
+    {% if has_read_later_posts %}
     <ul>
         {% for post in all_posts %}
         {% include "blog/includes/post.html" %}
         {% endfor %}
     </ul>
+    {% else %}
+    <p>No posts yet.</p>
+    {% endif %}
     </section>
 
 {% endblock %}
